@@ -1,0 +1,101 @@
+[
+    {
+        "id": "8d181384.80eee",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "971dab36.0ace08",
+        "type": "inject",
+        "z": "8d181384.80eee",
+        "name": "Trigger",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "x": 96,
+        "y": 60,
+        "wires": [
+            [
+                "4fb8939a.48595c"
+            ]
+        ]
+    },
+    {
+        "id": "4fb8939a.48595c",
+        "type": "exec",
+        "z": "8d181384.80eee",
+        "command": "vcgencmd",
+        "addpay": false,
+        "append": "measure_temp",
+        "useSpawn": "",
+        "timer": "",
+        "name": "getTemp",
+        "x": 240,
+        "y": 59.5,
+        "wires": [
+            [
+                "50acf357.410e6c"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "50acf357.410e6c",
+        "type": "function",
+        "z": "8d181384.80eee",
+        "name": "Temperature in JSON",
+        "func": "msg.payload = {\"d\":{\"temp\":msg.payload.replace(\"temp=\",\"\").replace(\"'C\\n\",\"\")}};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 434,
+        "y": 127,
+        "wires": [
+            [
+                "fa8b8012.42da2",
+                "93880c55.539c2"
+            ]
+        ]
+    },
+    {
+        "id": "fa8b8012.42da2",
+        "type": "wiotp out",
+        "z": "8d181384.80eee",
+        "authType": "d",
+        "qs": "false",
+        "qsDeviceId": "",
+        "deviceKey": "cf72688c.9fc368",
+        "deviceType": "",
+        "deviceId": "",
+        "event": "event",
+        "format": "json",
+        "name": "Send to Watson",
+        "x": 656,
+        "y": 70,
+        "wires": []
+    },
+    {
+        "id": "93880c55.539c2",
+        "type": "debug",
+        "z": "8d181384.80eee",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 650,
+        "y": 181,
+        "wires": []
+    },
+    {
+        "id": "cf72688c.9fc368",
+        "type": "wiotp-credentials",
+        "z": "",
+        "name": "Raspi-1-Credentials",
+        "org": "iq2bop",
+        "devType": "Raspi-1B",
+        "devId": "raspi-device-1"
+    }
+]
